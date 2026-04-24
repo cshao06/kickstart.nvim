@@ -164,6 +164,13 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+
+-- More space for displaying messages
+vim.o.cmdheight = 2
+-- Do not split the word at the eol
+vim.wo.linebreak = true
+
+
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -217,6 +224,25 @@ vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper win
 -- vim.keymap.set("n", "<C-S-l>", "<C-w>L", { desc = "Move window to the right" })
 -- vim.keymap.set("n", "<C-S-j>", "<C-w>J", { desc = "Move window to the lower" })
 -- vim.keymap.set("n", "<C-S-k>", "<C-w>K", { desc = "Move window to the upper" })
+
+
+local map = vim.keymap.set
+-- local noremap = { noremap = true }
+-- local silent = { silent = true }
+local noremap_silent = { noremap = true, silent = true }
+
+-- screenline
+map('n', 'j', 'gj', noremap_silent)
+map('n', 'k', 'gk', noremap_silent)
+map('n', '0', 'g0', noremap_silent)
+map('n', '$', 'g$', noremap_silent)
+
+-- move in insert mode
+map('i', '<C-h>', '<Left>', noremap_silent)
+map('i', '<C-j>', '<C-o>gj', noremap_silent)
+map('i', '<C-k>', '<C-o>gk', noremap_silent)
+map('i', '<C-l>', '<Right>', noremap_silent)
+
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -600,9 +626,9 @@ require('lazy').setup({
       --  See `:help lsp-config` for information about keys and how to configure
       ---@type table<string, vim.lsp.Config>
       local servers = {
-        -- clangd = {},
+        clangd = {},
         -- gopls = {},
-        -- pyright = {},
+        pyright = {},
         -- rust_analyzer = {},
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -878,6 +904,7 @@ require('lazy').setup({
 
       -- ... and there is more!
       --  Check out: https://github.com/nvim-mini/mini.nvim
+      require('mini.animate').setup( { cursor =  { enable = false }, resize = { enable = false } } )
     end,
   },
 
@@ -948,7 +975,7 @@ require('lazy').setup({
   --  Uncomment any of the lines below to enable them (you will need to restart nvim).
   --
   -- require 'kickstart.plugins.debug',
-  -- require 'kickstart.plugins.indent_line',
+  require 'kickstart.plugins.indent_line',
   -- require 'kickstart.plugins.lint',
   -- require 'kickstart.plugins.autopairs',
   -- require 'kickstart.plugins.neo-tree',
